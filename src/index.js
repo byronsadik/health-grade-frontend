@@ -90,25 +90,14 @@ class App extends React.Component {
   }
 }
 
-class Grade extends React.Component {
-  constructor(props){
-    super(props);
-
-    this.state = {
-      name: this.props.name,
-      grade: this.props.grade
-    };
-    
-  }
-
-  render (){
-    return (
-      <div>
-        <h1>Name: {this.props.name}</h1>
-        <h1>Grade: {this.props.grade}</h1>
-      </div>
-    ); 
-  }
+function Grade(props) {
+  return (
+    <div>
+      <h1>Name: {props.name}</h1>
+      <h1>Grade: {props.grade}</h1>
+    </div>
+  ); 
+  
 }
 
 
