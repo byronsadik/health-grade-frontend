@@ -20,15 +20,31 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.fetchThis();
+    this.fetchRestaurants();
   }
 
-  fetchThis(){
+  fetchZip(){
+     axios.get('https://ipapi.co/json/')
+          .then((response) => {
+            this.setState({
+              zip: response.data.postal
+            });
+          })
+          .then((response) => {
+            this.fetchRestaurants()
+          })
+          .catch((error) => {
+            console.log(error);
+          }); // end API call
+    }
+
+
+  fetchRestaurants() {
      axios.get('https://data.cityofnewyork.us/resource/43nn-pn8j.json', {
             params: {
                 "$limit" : 10,
                 "$$app_token" : "rwWEn2Tw493ASSX8bzGjwuz8O",
-                "zipcode": 11213    
+                "zipcode": 11213  // should be this.state.zip
             }
           })
           .then((response) => {
@@ -38,9 +54,8 @@ class App extends React.Component {
           })
           .catch((error) => {
             console.log(error);
-          });
-    }
-
+          }); // end API call
+  }
 
   getNameAndGrade(name, grade){
     return(
@@ -51,36 +66,44 @@ class App extends React.Component {
 
   render(){
 
-
     if (isEmpty(this.state)) {
         return <div>Loading</div>
     }
 
     let results = this.state.data;
 
-    console.log("results :", results[0].dba);
-
-
-    results.map(x => console.log(x.dba)); 
+    results.map(x => 
+        console.log("\n\nname: " + x.dba +
+          "\ngrade: " + x.grade
+        )
+    ); 
   
     return (
       <div className="App">
-       
-
       { results.map(x => this.getNameAndGrade(x.dba, x.grade)) }
-
       </div>
     );
   }
 }
 
-function Grade(props) {
-  return (
-    <div>
-      <h1>Name: {props.name}</h1>
-      <h1>Grade: {props.grade}</h1>
-    </div>
-  ); 
+class Grade extends React.Component {
+
+  constructor(props){
+    super(props);
+    this.state = {
+      name: this.props.name,
+      grade: this.props.grade === undefined ? "N/A" : this.props.grade
+    };
+  }
+
+  render() {
+    return (
+      <div>
+        <h1>Name: {this.state.name}</h1>
+        <h1>Grade: {this.state.grade}</h1>
+      </div>
+    ); 
+  }
   
 }
 
