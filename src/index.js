@@ -23,6 +23,20 @@ class App extends React.Component {
     this.fetchZip();
   }
 
+  fetchZip(){
+     axios.get('https://ipapi.co/json/')
+          .then((response) => {
+            this.setState({
+              zip: response.data.postal
+            });
+          }).then((response) => {
+            this.fetchRestaurants();
+          })
+          .catch((error) => {
+            console.log(error);
+          }); // end API call
+    }
+
   fetchRestaurants() {
      axios.get('https://data.cityofnewyork.us/resource/43nn-pn8j.json', {
             params: {
@@ -40,19 +54,6 @@ class App extends React.Component {
             console.log(error);
           }); // end API call
   }
-
-  fetchZip(){
-     axios.get('https://ipapi.co/json/')
-          .then((response) => {
-            this.setState({
-              zip: response.data.postal
-            }, this.fetchRestaurants);
-          })
-          .catch((error) => {
-            console.log(error);
-          }); // end API call
-    }
-
 
   getNameAndGrade(name, grade){
     return(
@@ -94,7 +95,7 @@ class Grade extends React.Component {
     super(props);
     this.state = {
       name: this.props.name,
-      grade: this.props.grade === undefined ? "N/A" : this.props.grade
+      grade: (this.props.grade === undefined) ? "N/A" : this.props.grade
     };
   }
 
