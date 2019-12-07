@@ -51,7 +51,6 @@ class App extends React.Component {
 
 
   getNameAndGrade(name, grade){
-
     return(
       <Grade name={name} grade={grade} />
     );
@@ -60,7 +59,9 @@ class App extends React.Component {
 
   render(){
 
-    console.log("render method", this.state);
+    if (!this.state) {
+        return <div>Loading</div>
+    }
   
     return (
       <div className="App">
@@ -80,9 +81,15 @@ class App extends React.Component {
         </header>
 
       { 
+
         this.state.data ? 
-        this.getNameAndGrade(this.state.data.data[0].dba, this.state.data.data[0].grade)
-        : this.getNameAndGrade()
+
+          this.getNameAndGrade(this.state.data.data[0].dba, this.state.data.data[0].grade)    
+
+           :
+
+           this.getNameAndGrade()
+        
       }
 
       </div>
