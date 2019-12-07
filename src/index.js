@@ -7,12 +7,10 @@ import './App.css';
 const axios = require('axios');
 
 
-
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 
-var appState;
 
 class App extends React.Component {
 
@@ -34,15 +32,9 @@ class App extends React.Component {
             }
           })
           .then((response) => {
-
-
-            appState = response.data;
             this.setState({
-              data: response
-            }, () =>{
-
+              data: response.data
             });
-            return;
           })
           .catch((error) => {
             console.log(error);
@@ -59,9 +51,12 @@ class App extends React.Component {
 
   render(){
 
-    if (!this.state) {
+
+    if (isEmpty(this.state)) {
         return <div>Loading</div>
     }
+
+    let results = this.state.data;
   
     return (
       <div className="App">
@@ -80,17 +75,7 @@ class App extends React.Component {
           </a>
         </header>
 
-      { 
-
-        this.state.data ? 
-
-          this.getNameAndGrade(this.state.data.data[0].dba, this.state.data.data[0].grade)    
-
-           :
-
-           this.getNameAndGrade()
-        
-      }
+      {this.getNameAndGrade(results[0].dba, results[0].grade) }
 
       </div>
     );
@@ -110,3 +95,12 @@ function Grade(props) {
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
+
+function isEmpty(obj) {
+    for(var prop in obj) {
+        if(obj.hasOwnProperty(prop)) {
+          return false
+        };
+    }
+    return true;
+}
