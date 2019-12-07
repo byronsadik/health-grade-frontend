@@ -57,25 +57,17 @@ class App extends React.Component {
     }
 
     let results = this.state.data;
+
+    console.log("results :", results[0].dba);
+
+
+    results.map(x => console.log(x.dba)); 
   
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+       
 
-      {this.getNameAndGrade(results[0].dba, results[0].grade) }
+      { results.map(x => this.getNameAndGrade(x.dba, x.grade)) }
 
       </div>
     );
