@@ -20,7 +20,19 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.fetchZip();
+    this.getLocalAPI();
+  }
+
+  getLocalAPI() {
+    axios.get('http://localhost:4000')
+      .then((response) => {
+        this.setState({
+          data: response.data
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      }); // end API call    
   }
 
   fetchZip(){
@@ -64,13 +76,10 @@ class App extends React.Component {
 
   render(){
 
-
-    // debugger;
     if (isEmpty(this.state.data)) {
         return <div>Loading</div>
     }
 
-    console.log("zip: ", this.state.zip);
     console.log("data: ", this.state.data);
 
     let results = this.state.data;
